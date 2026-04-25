@@ -4,110 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>托马斯解码系统 v2026</title>
+    <title>托马斯解码系统</title>
     <style>
-        body{font-family:Arial,sans-serif;padding:10px;background:#f5f5f5;margin:0}
-        h1{text-align:center;font-size:20px;margin:10px 0}
+        body{font-family:Arial,sans-serif;padding:10px;background:#f5f5f5}
+        h1{text-align:center;font-size:20px}
         textarea{width:100%;height:120px;padding:10px;font-size:16px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box}
         button{width:100%;padding:15px;background:#28a745;color:white;border:none;border-radius:5px;font-size:18px;margin:10px 0}
-        .core{background:#fff3cd;padding:10px;border-radius:5px;margin:10px 0;border-left:4px solid #ffc107}
-        .defense{background:#e8f5e9;padding:10px;border-radius:5px;margin:10px 0;border-left:4px solid #4caf50}
-        .num{display:inline-block;width:36px;height:36px;line-height:36px;text-align:center;background:#007bff;color:white;border-radius:50%;margin:3px;font-weight:bold;font-size:14px}
-        .num-core{background:#dc3545}
-        .num-defense{background:#6c757d}
+        .num{display:inline-block;width:36px;height:36px;line-height:36px;text-align:center;background:#007bff;color:white;border-radius:50%;margin:3px}
     </style>
 </head>
 <body>
-    <h1>🐴 托马斯解码系统 (2026)</h1>
+    <h1>托马斯解码系统</h1>
     <textarea id="poem" placeholder="请在此输入托马斯诗句..."></textarea>
-    <button onclick="decode()">🔍 开始解码</button>
+    <button onclick="decode()">开始解码</button>
     <div id="result"></div>
     <script>
-        var mutiList = [
-            {name:"中秋", words:["中秋"], nums:[8,15]},
-            {name:"重阳", words:["重阳"], nums:[9,1]},
-            {name:"四季", words:["四季"], nums:[4,12]},
-            {name:"三更", words:["三更"], nums:[3]},
-            {name:"归一", words:["归一"], nums:[1]},
-            {name:"乾坤", words:["乾坤"], nums:[1,49]},
-            {name:"天涯", words:["天涯"], nums:[1,49]},
-            {name:"玄机", words:["玄机"], nums:[49]},
-            {name:"荷花", words:["荷花"], nums:[1]},
-            {name:"双手", words:["双手"], nums:[2]},
-            {name:"五福", words:["五福"], nums:[5]},
-            {name:"八卦", words:["八卦"], nums:[8]},
-            {name:"四方", words:["四方"], nums:[4]},
-            {name:"一路", words:["一路"], nums:[1]},
-            {name:"六合", words:["六合"], nums:[6,15,24,33,42]},
-            {name:"红波", words:["红波"], nums:[1,2,7,8,12,13,18,19,23,24,29,30,34,35,40,45,46]},
-            {name:"蓝波", words:["蓝波"], nums:[3,4,9,10,14,15,20,25,26,31,36,37,41,42,47,48]},
-            {name:"绿波", words:["绿波"], nums:[5,6,11,16,17,21,22,27,28,32,33,38,39,43,44,49]},
-            {name:"红梅", words:["红梅","红袖"], nums:[1,2,7,8,12,13,18,19,23,24,29,30,34,35,40,45,46]},
-            {name:"绿柳", words:["绿柳"], nums:[5,6,11,16,17,21,22,27,28,32,33,38,39,43,44,49]},
-            {name:"蓝珠", words:["蓝珠"], nums:[3,4,9,10,14,15,20,25,26,31,36,37,41,42,47,48]},
-            {name:"大财", words:["大财","大注"], nums:Array.from({length:25},function(_,i){return i+25})},
-            {name:"小码", words:["小码"], nums:Array.from({length:24},function(_,i){return i+1})},
-            {name:"双数", words:["双数"], nums:Array.from({length:24},function(_,i){return (i+1)*2})},
-            {name:"单数", words:["单数"], nums:Array.from({length:25},function(_,i){return i*2+1})},
-            {name:"马", words:["马"], nums:[1,13,25,37,49]},
-            {name:"蛇", words:["蛇"], nums:[2,14,26,38]},
-            {name:"龙", words:["龙"], nums:[3,15,27,39]},
-            {name:"兔", words:["兔"], nums:[4,16,28,40]},
-            {name:"虎", words:["虎","老虎"], nums:[5,17,29,41]},
-            {name:"牛", words:["牛"], nums:[6,18,30,42]},
-            {name:"鼠", words:["鼠"], nums:[7,19,31,43]},
-            {name:"猪", words:["猪"], nums:[8,20,32,44]},
-            {name:"狗", words:["狗"], nums:[9,21,33,45]},
-            {name:"鸡", words:["鸡"], nums:[10,22,34,46]},
-            {name:"猴", words:["猴"], nums:[11,23,35,47]},
-            {name:"羊", words:["羊"], nums:[12,24,36,48]},
-            {name:"山林", words:["山林"], nums:[5,17,29,41]},
-            {name:"美女", words:["美女"], nums:[12,24,36,48]},
-            {name:"桃花", words:["桃花"], nums:[4,16,28,40]},
-            {name:"铁树", words:["铁树"], nums:[3,15,27,39]},
-            {name:"东宫", words:["东宫"], nums:[3,15,27,39]},
-            {name:"春色", words:["春色"], nums:[4,16,28,40,5,17,29,41,3,15,27,39]},
-            {name:"天肖", words:["天肖"], nums:[4,16,28,40,1,13,25,37,49,11,23,35,47,8,20,32,44,6,18,30,42,3,15,27,39]},
-            {name:"地肖", words:["地肖"], nums:[2,14,26,38,12,24,36,48,10,22,34,46,9,21,33,45,7,19,31,43,5,17,29,41]},
-            {name:"家畜", words:["家畜","农家"], nums:[12,24,36,48,1,13,25,37,49,6,18,30,42,8,20,32,44,9,21,33,45,10,22,34,46]}
-        ];
-
+        var wordMap = {
+            "中秋":[8,15],"重阳":[9,1],"四季":[4,12],"三更":[3],
+            "归一":[1],"六合":[6,15,24,33,42],
+            "红波":[1,2,7,8,12,13,18,19,23,24,29,30,34,35,40,45,46],
+            "蓝波":[3,4,9,10,14,15,20,25,26,31,36,37,41,42,47,48],
+            "绿波":[5,6,11,16,17,21,22,27,28,32,33,38,39,43,44,49],
+            "大财":[25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49],
+            "虎":[4,16,28,40],"龙":[2,14,26,38],"兔":[3,15,27,39],
+            "猪":[7,19,31,43],"狗":[8,20,32,44],"鸡":[9,21,33,45],
+            "猴":[10,22,34,46],"羊":[11,23,35,47],"马":[12,24,36,48],
+            "牛":[5,17,29,41],"鼠":[6,18,30,42],"蛇":[1,13,25,37,49],
+            "山林":[4,16,28,40],"美女":[11,23,35,47],"桃花":[3,15,27,39],
+            "天肖":[3,15,27,39,12,24,36,48,10,22,34,46,7,19,31,43,5,17,29,41,2,14,26,38],
+            "家畜":[11,23,35,47,12,24,36,48,5,17,29,41,7,19,31,43,8,20,32,44,9,21,33,45]
+        };
         function decode() {
             var poem = document.getElementById("poem").value;
-            var numScore = {};
-            for (var i = 0; i < mutiList.length; i++) {
-                var muti = mutiList[i];
-                var matched = false;
-                for (var j = 0; j < muti.words.length; j++) {
-                    if (poem.indexOf(muti.words[j]) !== -1) { matched = true; break; }
-                }
-                if (matched) {
-                    for (var k = 0; k < muti.nums.length; k++) {
-                        var num = muti.nums[k];
-                        if (!numScore[num]) numScore[num] = {count:0, names:[]};
-                        numScore[num].count++;
-                        if (numScore[num].names.indexOf(muti.name) === -1) numScore[num].names.push(muti.name);
-                    }
+            var numbers = [];
+            var matched = [];
+            for (var word in wordMap) {
+                if (poem.indexOf(word) !== -1) {
+                    numbers = numbers.concat(wordMap[word]);
+                    matched.push(word + " → " + wordMap[word].join(","));
                 }
             }
-            var core = [], defense = [];
-            for (var n in numScore) {
-                if (numScore[n].count >= 2) core.push(parseInt(n));
-                else defense.push(parseInt(n));
+            var unique = [];
+            for (var i = 0; i < numbers.length; i++) {
+                if (unique.indexOf(numbers[i]) === -1) unique.push(numbers[i]);
             }
-            core.sort(function(a,b){return a-b});
-            defense.sort(function(a,b){return a-b});
-            
-            var html = '<div class="core"><h3>🎯 核心胆码（共'+core.length+'个）</h3>';
-            for (var i = 0; i < core.length; i++) {
-                html += '<span class="num num-core">'+core[i]+'</span>';
+            unique.sort(function(a, b) { return a - b; });
+            var html = '<p><b>诗句：</b>' + poem + '</p>';
+            html += '<p><b>触发线索：</b></p><ul>';
+            for (var i = 0; i < matched.length; i++) {
+                html += '<li>' + matched[i] + '</li>';
             }
-            html += '</div><div class="defense"><h3>🛡️ 防守号码（共'+defense.length+'个）</h3>';
-            for (var i = 0; i < defense.length; i++) {
-                html += '<span class="num num-defense">'+defense[i]+'</span>';
+            html += '</ul><p><b>候选数字（共' + unique.length + '个）：</b></p>';
+            for (var i = 0; i < unique.length; i++) {
+                html += '<span class="num">' + unique[i] + '</span>';
             }
-            html += '</div><p><b>诗句：</b>'+poem+'</p>';
-            html += '<p><b>总计：</b>'+(core.length+defense.length)+'个（核心'+core.length+' + 防守'+defense.length+'）</p>';
             document.getElementById("result").innerHTML = html;
         }
     </script>
